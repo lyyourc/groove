@@ -1,0 +1,33 @@
+{
+  "name": "groove",
+  "version": "0.0.1",
+  "description": "make algorithms animate",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "test": "karma start karma.conf.js"
+  },
+  "keywords": [
+    "algorithms",
+    "data structure",
+    "animation"
+  ],
+  "author": "Drake Leung",
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^0.23.1",
+    "html-webpack-plugin": "^2.7.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-jasmine": "^0.3.7",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-webpack": "^1.7.0",
+    "phantomjs-prebuilt": "^2.1.7",
+    "style-loader": "^0.13.0",
+    "ts-loader": "^0.8.2",
+    "typings": "^0.8.1",
+    "webpack": "^1.12.11",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-merge": "^0.7.3"
+  }
+}
