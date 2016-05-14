@@ -1,0 +1,26 @@
+.groove-bar {
+  position: relative;
+  
+  background: #487E88; 
+  display: inline-block;
+  border: 1px solid #fff;
+  
+  left: 0;
+}
+
+.groove-bar.pink {
+  background: #DD7D73;
+}
+.groove-bar.green {
+  background: #57A769;
+}
+.groove-bar.orange {
+  background: #DDA773;
+}
+
+.groove-bar::before {
+  content: attr(data-value);
+  position: absolute;
+  top: -16px;
+  color: #233;
+}
