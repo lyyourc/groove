@@ -27,7 +27,7 @@ const common = {
 
   plugins: [
     new HtmlwebpackPlugin({
-      title: 'ES2015 Start Kit'
+      template: './index.html',
     })
   ],
 
