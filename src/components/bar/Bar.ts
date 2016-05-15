@@ -5,11 +5,22 @@ import {
 } from '../../util/hyper'
 
 export default class Bar {
-  width: number = 20
+  width: number
   height: number = 0
   element: HTMLDivElement
 
-  constructor (value: number, key: string, animationTime: number) {
+  constructor ({
+    value,
+    key,
+    animationTime = 1000,
+    barWidth = 50
+  }: {
+    value: number,
+    key: string,
+    animationTime?: number,
+    barWidth?: number
+  }) {
+    this.width = barWidth
     this.height = value * 2
 
     this.element = h('div', {
@@ -21,13 +32,6 @@ export default class Bar {
         height: ${this.height}px; 
         transition: all ${animationTime}s;`,
     })
-  }
-
-  style (type: string) {
-    const { element } = this
-
-    element.className = 'groove-bar'
-    type && element.classList.add(type)
   }
 }
 
