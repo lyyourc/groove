@@ -1,4 +1,3 @@
-import { h } from '../util/hyper'
 import { swap } from '../util/array'
 import { sleep } from '../util/async'
 
@@ -14,7 +13,6 @@ import {
   COLOR_PINK,
 } from '../util/constant'
 
-import Bar from '../components/bar/Bar'
 import Sort from './Sort'
 
 export default class SelectionSort extends Sort {
@@ -33,7 +31,6 @@ export default class SelectionSort extends Sort {
       barWidth
     })
 
-    this.element = this.render()
   }
 
   // selection sort
@@ -82,35 +79,5 @@ export default class SelectionSort extends Sort {
 
     const item2  = element.querySelector(`[data-key=${state[minIndex].key}]`)
     item2.style.left = `${-(minIndex - i) * this.barWidth + getLeft(item2)}px`;
-  }
-
-  // set background color for bar
-  style (index, color) {
-    const { element, state } = this
-    element.querySelector(`[data-key=${state[index].key}]`)
-      .style['background'] = color
-  }
-
-  unstyle (index) {
-    const { element, state } = this
-    element.querySelector(`[data-key=${state[index].key}]`)
-      .style['background'] = ''
-  }
-
-  // render the DOM
-  render () {
-    return h('div.bar', {}, this.state
-      .reduce((prev, current) => {
-        const bar = new Bar({
-          value: current.value,
-          key: current.key,
-          animationTime: this.animationTime / 1000,
-          barWidth: this.barWidth
-        })
-
-        prev.appendChild(bar.element)
-        return prev
-      }, document.createDocumentFragment())
-    )
   }
 }

@@ -1,16 +1,11 @@
 import './app.css'
 
-import SelectionSort from './sort/SelectionSort'
+import InsertSort from './sort/InsertSort'
 
 const data = [33, 24, 17, 24, 42, 3, 10]
-const selectionSort = new SelectionSort({
-  data,
-  animationTime: 500,
-  barWidth: 50
-})
+const insert = new InsertSort({ data })
+
 document.querySelector('main')
-  .appendChild(selectionSort.element)
-  
-selectionSort.sort()
-// selectionSort.play()
-// console.log(selectionSort.element)
+  .appendChild(insert.element)
+
+insert.sort()

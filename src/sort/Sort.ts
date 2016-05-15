@@ -1,18 +1,23 @@
+import { h } from '../util/hyper'
+
+import Bar from '../components/bar/Bar'
+
+
 export default class Sort {
   state: any
   element: any
 
-  animationTime: number = 1000
-  barWidth: number = 50
+  animationTime: number
+  barWidth: number
 
   constructor ({
     data,
-    animationTime,
-    barWidth
+    animationTime = 1000,
+    barWidth = 50
   }: {
     data: any[],
-    animationTime?: any,
-    barWidth?: any
+    animationTime?: number,
+    barWidth?: number
   }) {
     this.animationTime = animationTime
     this.barWidth = barWidth
@@ -21,5 +26,42 @@ export default class Sort {
       value: d,
       key: `groove-bar-${i}`}
     ))
+
+    this.element = this.render()
+  }
+
+  // set background color for bar
+  style (index, color) {
+    const { element, state } = this
+    element.querySelector(`[data-key=${state[index].key}]`)
+      .style['background'] = color
+  }
+
+  unstyle (index) {
+    const { element, state } = this
+    element.querySelector(`[data-key=${state[index].key}]`)
+      .style['background'] = ''
+  }
+
+  // render the DOM
+  render () {
+    return h('div.bar', {}, this.state
+      .reduce((prev, current) => {
+        const bar = new Bar({
+          value: current.value,
+          key: current.key,
+          animationTime: this.animationTime / 1000,
+          barWidth: this.barWidth
+        })
+
+        prev.appendChild(bar.element)
+        return prev
+      }, document.createDocumentFragment())
+    )
+  }
+
+  queryByIndex (index: number) {
+    const { element, state } = this
+    return element.querySelector(`[data-key=${state[index].key}]`)
   }
 }

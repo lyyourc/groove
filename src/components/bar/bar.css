@@ -6,6 +6,7 @@
   border: 1px solid #fff;
   
   left: 0;
+  top: 0;
 }
 
 .groove-bar::before {
