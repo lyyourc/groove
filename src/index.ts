@@ -1,11 +1,13 @@
 import './app.css'
 
-import InsertSort from './sort/InsertSort'
+import MergeSort from './sort/MergeSort'
 
 const data = [33, 24, 17, 24, 42, 3, 10]
-const insert = new InsertSort({ data })
+const merge = new MergeSort({ data })
 
 document.querySelector('main')
-  .appendChild(insert.element)
+  .appendChild(merge.element)
 
-insert.sort()
+merge.sort()
+// merge.play()
+console.table(merge.state)

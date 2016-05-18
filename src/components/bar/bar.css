@@ -1,12 +1,15 @@
-.groove-bar {
+.groove-bars-container {
   position: relative;
+  height: 200px;
+}
+.groove-bar {
+  position: absolute;
   
   background: #89BFB8; 
-  display: inline-block;
   border: 1px solid #fff;
   
   left: 0;
-  top: 0;
+  bottom: 100px;
 }
 
 .groove-bar::before {

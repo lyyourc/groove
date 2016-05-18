@@ -12,11 +12,13 @@ export default class Bar {
   constructor ({
     value,
     key,
+    style = '',
     animationTime = 1000,
     barWidth = 50
   }: {
     value: number,
     key: string,
+    style?: string,
     animationTime?: number,
     barWidth?: number
   }) {
@@ -27,10 +29,7 @@ export default class Bar {
       class: 'groove-bar',
       'data-value': value,
       'data-key': key,
-      style: `
-        width: ${this.width}px;
-        height: ${this.height}px; 
-        transition: all ${animationTime}s;`,
+      style: `${style} width: ${this.width}px; height: ${this.height}px; transition: all ${animationTime}s;`,
     })
   }
 }
