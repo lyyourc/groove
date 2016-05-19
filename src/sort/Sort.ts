@@ -7,7 +7,7 @@ export default class Sort {
   state: any
   element: any
 
-  animations: any[]
+  animations: any[] = []
   animationTime: number
   barWidth: number
 
@@ -65,6 +65,9 @@ export default class Sort {
   queryByIndex (index: number) {
     const { element, state } = this
     return element.querySelector(`[data-key=${state[index].key}]`)
+  }
+  queryByKey (key: string) {
+    return this.element.querySelector(`[data-key=${key}]`)
   }
 
   play () {

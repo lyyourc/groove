@@ -1,13 +1,13 @@
 import './app.css'
 
-import MergeSort from './sort/MergeSort'
+import QuickSort from './sort/QuickSort'
 
-const data = [33, 24, 17, 24, 42, 3, 10]
-const merge = new MergeSort({ data })
+const data = [17, 24, 33, 24, 42, 3, 10]
+const quick = new QuickSort({ data })
 
 document.querySelector('main')
-  .appendChild(merge.element)
+  .appendChild(quick.element)
 
-merge.sort()
-// merge.play()
-console.table(merge.state)
+quick.sort()
+// quick.play()
+console.table(quick.state)
