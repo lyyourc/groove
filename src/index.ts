@@ -1,13 +1,28 @@
 import './app.css'
 
-import QuickSort from './sort/QuickSort'
+import Nav from './components/nav/Nav'
 
-const data = [17, 24, 33, 24, 42, 3, 10]
-const quick = new QuickSort({ data })
+const nav = new Nav({
+  name: 'groove',
+  children: [{
+    name: 'Sorting',
+    children: [{
+      name: 'Select',
+      route: '/sorting/selectsort',
+    }, {
+      name: 'Insert',
+      route: '/sorting/insertsort'
+    }, {
+      name: 'Merge',
+      route: '/sorting/mergesort',
+    }, {
+      name: 'Quick',
+      route: '/sorting/quicksort',
+    }]
+  }, {
+    name: 'Linked List'
+  }]
+})
 
-document.querySelector('main')
-  .appendChild(quick.element)
-
-quick.sort()
-// quick.play()
-console.table(quick.state)
+document.querySelector('body')
+  .appendChild(nav.element)
