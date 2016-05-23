@@ -1,8 +1,9 @@
 import './app.css'
 
-import Nav from './components/nav/Nav'
+// import Nav from './components/nav/Nav'
+import Tree from './components/tree/Tree'
 
-const nav = new Nav({
+const nav = new Tree({
   name: 'groove',
   children: [{
     name: 'Sorting',
@@ -20,7 +21,12 @@ const nav = new Nav({
       route: '/sorting/quicksort',
     }]
   }, {
-    name: 'Linked List'
+    name: 'Linked List',
+    children: [{
+      name: 'Stack'
+    }, {
+      name: 'Queue'
+    }]
   }]
 })
 
