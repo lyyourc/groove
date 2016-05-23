@@ -1,56 +1,53 @@
 import { h } from '../../util/hyper'
+import {
+  NavState,
+  NavItem,
+  NavProps,
+} from './NavInterface'
 
 import './nav.css'
 
 export default class Nav {
-  state: any
-  data: any
+  state: NavState
+  props: NavProps
   element: HTMLElement
 
-  constructor (data = {}) {
-    this.state = {
-      data,
-      selectedNodeName: ''
-    }
+  constructor (
+    data: NavItem
+  ) {
+    this.state = { selectedNodeName: '' }
+    this.props = { data }
+
     this.element = this.render()
   }
 
-  render (
-    data: any = {}
-  ): HTMLElement {
-    const { state } = this
+  render (): HTMLElement {
+    const { state, props } = this
 
     return h('nav.groove-nav', {},
-      h('ul', {}, this.renderNode(state.data))
+      h('ul', {}, this.renderNode(props.data))
     )
   }
 
   renderNode ({
     name = '',
-    expand = true,
     route = '',
     children = []
-  }: {
-    name: string,
-    expand: boolean,
-    route: string,
-    children: any[]
-  }): HTMLElement {
+  }: NavItem
+  ): HTMLElement {
     const { state } = this
     const node = h('li.node')
 
-    if (name) {
-      const nodeTitle = h('div.node-name', {
-        'data-selected': state.selectedNodeName === name,
-        onClick: e => this.selectNode(node, name)
-      }, !route
-        ? name
-        : h('a', { href: `#${route}` }, name)
-      )
+    // node title
+    const nodeTitle = h('div.node-name', {
+      'data-selected': state.selectedNodeName === name,
+      onClick: e => this.selectNode(node, name)
+    },
+      h('a', { href: `#${route}` }, name)
+    )
+    node.appendChild(nodeTitle)
 
-      node.appendChild(nodeTitle)
-    }
-
+    // node children
     if (children.length === 0) return node
 
     const childNodes = children.reduce((prev, child) => {
@@ -58,9 +55,7 @@ export default class Nav {
       return prev
     }, document.createDocumentFragment())
 
-    node.appendChild(h('ul', {
-      style: `display: ${expand ? 'block' : 'none'}`
-    }, childNodes))
+    node.appendChild(h('ul', {}, childNodes))
 
     return node
   }
@@ -68,21 +63,12 @@ export default class Nav {
   selectNode (node, name) {
     const { state } = this
     state.selectedNodeName = name
-    this.toggleNode(name)
     this.reRender()
-  }
-
-  toggleNode (name) {
-    const { state } = this
-    this.state = JSON.parse(
-      JSON.stringify(state)
-        .replace(new RegExp(`("name":"${name}")`, 'i'), `$1,"expand":false`)
-    )
   }
 
   reRender () {
     const oldElement = this.element
-    const newElement = this.render(this.data)
+    const newElement = this.render()
 
     oldElement.parentNode.replaceChild(newElement, oldElement)
     this.element = newElement
