@@ -7,7 +7,7 @@ delete webpackConfig.entry
 // karma.conf.js
 module.exports = function (config) {
   config.set({
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
     frameworks: ['jasmine'],
     // this is the entry file for all our tests.
     files: ['test/index.ts'],
@@ -21,6 +21,6 @@ module.exports = function (config) {
     webpackMiddleware: {
       noInfo: true
     },
-    singleRun: true
+    singleRun: false
   })
 }
