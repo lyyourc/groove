@@ -1,7 +1,4 @@
-interface router {
-  path: string,
-  controller: any
-}
+import { router } from './RouterInterface'
 
 export default class Router {
   routes: router[] = []
@@ -11,19 +8,29 @@ export default class Router {
     this.view = view
   }
 
-  route (path, controller) {
-    this.routes.push({ path, controller})
+  route (
+    path: string,
+    controller: any
+  ) {
+    this.routes.push({ path, controller })
   }
 
   render () {
     const url = location.hash.slice(1) || '/'
     const route = this.routes.filter(r => r.path === url)[0]
 
-    if (route == null) return
+    // non-registered route
+    if (route == null) {
+      this.view.innerHTML = ''
+      return
+    }
+
     const component = route.controller()
-    if (typeof component === 'string') {
+
+    if (typeof component === 'string' || component == null) {
       this.view.innerHTML = route.controller() || ''
     } else {
+      this.view.innerHTML = ''
       this.view.appendChild(component || null)
     }
   }

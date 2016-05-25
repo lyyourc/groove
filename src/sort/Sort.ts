@@ -46,20 +46,20 @@ export default class Sort {
 
   // render the DOM
   render () {
-    return h('div.groove-bars-container', {}, this.state
-      .reduce((prev, current, index) => {
-        const bar = new Bar({
-          value: current.value,
-          key: current.key,
-          style: `left: ${index * this.barWidth}px;`,
-          animationTime: this.animationTime / 1000,
-          barWidth: this.barWidth,
-        })
+    return h('div.groove-bars-container', {
+      style: `width: ${this.barWidth * this.state.length}px;`,
+    }, this.state.reduce((prev, current, index) => {
+      const bar = new Bar({
+        value: current.value,
+        key: current.key,
+        style: `left: ${index * this.barWidth}px;`,
+        animationTime: this.animationTime / 1000,
+        barWidth: this.barWidth,
+      })
 
-        prev.appendChild(bar.element)
-        return prev
-      }, document.createDocumentFragment())
-    )
+      prev.appendChild(bar.element)
+      return prev
+    }, document.createDocumentFragment()))
   }
 
   queryByIndex (index: number) {

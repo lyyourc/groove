@@ -14,7 +14,7 @@
   padding-left: 0;
 }
 
-.groove-nav .node-name {
+.groove-nav div.node-name {
   border-bottom: 1px solid #CDD0D7;
   padding: .8rem;
   cursor: pointer;
@@ -25,6 +25,9 @@
 .groove-nav a {
   text-decoration: none;
   color: #4D5362;
+  height: 100%;
+  width: 100%;
+  display: block;
 }
 
 .groove-nav [data-selected=true] {

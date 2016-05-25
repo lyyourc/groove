@@ -1,10 +1,14 @@
 import { h } from './util/hyper'
+import { random } from './util/array'
 import Router from './router/Router'
 
 import Nav from './components/nav/Nav'
 import { NavItem } from './components/nav/NavInterface'
 import { NAV_DATA } from './util/constant'
 
+import SelectionSort from './sort/SelectionSort'
+import InsertSort from './sort/InsertSort'
+import MergeSort from './sort/MergeSort'
 import QuickSort from './sort/QuickSort'
 
 export default class App {
@@ -16,18 +20,7 @@ export default class App {
     this.props = { navData: NAV_DATA }
     this.mainView = h('main.groove-main')
     this.element = this.render()
-
-    // route here
-    const data = [17, 24, 33, 24, 42, 3, 10]
-    const router = new Router(this.mainView)
-
-    router.route('/sorting/insert', () => console.log('hello'))
-    router.route('/sorting/quick', () => {
-      const quick = new QuickSort({data})
-      quick.sort()
-      return quick.element
-    })
-    router.bootstrap()
+    this.route()
   }
 
   render () {
@@ -37,4 +30,30 @@ export default class App {
       this.mainView
     )
   }
+
+  route () {
+    // route here
+    const data = Array.from(Array(8)).map(x => random(5, 50))
+    const router = new Router(this.mainView)
+
+    router.route('/sorting/select', () =>
+      renderSortComponent(SelectionSort, { data })
+    )
+    router.route('/sorting/insert', () =>
+      renderSortComponent(InsertSort, { data })
+    )
+    router.route('/sorting/merge', () =>
+      renderSortComponent(MergeSort, { data })
+    )
+    router.route('/sorting/quick', () =>
+      renderSortComponent(QuickSort, { data })
+    )
+    router.bootstrap()
+  }
+}
+
+function renderSortComponent (Component, options) {
+  const component = new Component(options)
+  component.sort()
+  return component.element
 }

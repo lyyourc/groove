@@ -16,4 +16,6 @@ body {
 .groove-main {
   flex: 1;
   align-items: center;
+  display: flex;
+  justify-content: center;
 }
