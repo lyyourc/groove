@@ -68,26 +68,26 @@ export default class QuickSort extends Sort {
       // animation end
 
       if (state[j].value <= state[pivot].value) {
-        swap(j, i, state)
-
         // animation start
         const key1 = state[i].key
         const key2 = state[j].key
+
         this.animations.push(() => {
-          this.styleByKey(key1, 'purple')
-          this.styleByKey(key1, 'purple')
-          this.swap(key1, key2)
+          // this.styleByKey(key1, 'purple')
+          this.styleByKey(key2, 'purple')
+          key1 !== key2 && (this.swap(key1, key2))
         })
         // animation end
 
+        swap(j, i, state)
         i++
+      } else {
+        // animation start
+        this.animations.push(
+          this.styleByKey.bind(this, state[j].key, '')
+        )
+        // animation end
       }
-
-      // animation start
-      this.animations.push(
-        this.styleByKey.bind(this, state[j].key, '')
-      )
-      // animation end
     }
 
     swap(pivot, i - 1, state)
