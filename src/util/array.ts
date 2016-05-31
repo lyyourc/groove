@@ -10,3 +10,11 @@ export function random (
   const result: number = Math.random() * (upper - lower) + lower
   return floating ? result : Math.floor(result)
 }
+
+export function unique (
+  array: number[]
+) {
+  return array.filter((item, index) =>
+    array.indexOf(item) === index
+  )
+}
