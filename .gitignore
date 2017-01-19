@@ -1,4 +1,4 @@
-node_modules
-typings
-.vscode
-build
+.DS_Store
+node_modules/
+dist/
+npm-debug.log

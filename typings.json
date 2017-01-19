@@ -1,9 +1,0 @@
-{
-  "name": "es6-setup",
-  "version": false,
-  "dependencies": {},
-  "ambientDependencies": {
-    "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
-    "webpack-env": "registry:dt/webpack-env#1.12.2+20160316155526"
-  }
-}

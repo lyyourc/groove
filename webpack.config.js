@@ -1,79 +1,75 @@
-const path = require('path')
+var path = require('path')
+var webpack = require('webpack')
 
-const merge = require('webpack-merge')
-const webpack = require('webpack')
-const HtmlwebpackPlugin = require('html-webpack-plugin')
-
-const TARGET = process.env.npm_lifecycle_event
-const PATHS = {
-  src: path.join(__dirname, 'src'),
-  build: path.join(__dirname, 'build')
-}
-
-// common config
-const common = {
-  entry: [
-    PATHS.src
-  ],
-
+module.exports = {
+  entry: './src/main.js',
   output: {
-    path: PATHS.build,
+    path: path.resolve(__dirname, './dist'),
+    publicPath: '/dist/',
     filename: 'build.js'
   },
-  
-  resolve: {
-    extensions: ['', '.ts', '.js']
-  },
-
-  plugins: [
-    new HtmlwebpackPlugin({
-      template: './index.html',
-    })
-  ],
-
   module: {
-    loaders: [
+    rules: [
       {
-        loaders: ['style', 'css'],
-        test: /\.css$/,
-        include: PATHS.src
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
+            // the "scss" and "sass" values for the lang attribute to the right configs here.
+            // other preprocessors should work out of the box, no loader config like this nessessary.
+            'scss': 'vue-style-loader!css-loader!sass-loader',
+            'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+          }
+          // other vue-loader options go here
+        }
       },
       {
-        loader: 'ts-loader',
-        test: /\.ts$/,
+        test: /\.js$/,
+        loader: 'babel-loader',
         exclude: /node_modules/
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]?[hash]'
+        }
       }
     ]
-  }
+  },
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.common.js'
+    }
+  },
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true
+  },
+  performance: {
+    hints: false
+  },
+  devtool: '#eval-source-map'
 }
 
-// for dev env
-if (TARGET === 'start' || !TARGET) {
-  module.exports = merge(common, {
-    devtool: '#inline-source-map',
-    debug: true,
-
-    devServer: {
-      historyApiFallback: true,
-      hot: true,
-      inline: true,
-      progress: true,
-      host: 'localhost',
-      port: '3000'
-    },
-
-    plugins: [
-      new webpack.HotModuleReplacementPlugin()
-    ]
-  })
-}
-
-if (TARGET === 'build') {
-  module.exports = merge(common, {
-    devtool: 'eval'
-  })
-}
-
-if (TARGET === 'test') {
-  module.exports = common
+if (process.env.NODE_ENV === 'production') {
+  module.exports.devtool = '#source-map'
+  // http://vue-loader.vuejs.org/en/workflow/production.html
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
+  ])
 }
