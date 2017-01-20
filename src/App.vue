@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    {{ msg }}
+    <h1> {{ msg }} </h1>
   </div>
 </template>
 
@@ -16,4 +16,11 @@ export default {
 </script>
 
 <style>
+:root {
+  --mainColor: #abcdef;
+  font-size: responsive;
+}
+
+body {
+}
 </style>
