@@ -1,26 +1,22 @@
 <template>
   <div id="app">
-    <h1> {{ msg }} </h1>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
   name: 'app',
-  data () {
-    return {
-      msg: 'I hate algorithms'
-    }
-  }
 }
 </script>
 
 <style>
 :root {
-  --mainColor: #abcdef;
+  --mainColor: #eee;
   font-size: responsive;
 }
 
 body {
+  margin: 0;
 }
 </style>
