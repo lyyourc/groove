@@ -1,33 +1,19 @@
 {
-  "name": "groove",
-  "description": "A Vue.js project",
+  "name": "i-hate-algorithm",
   "version": "1.0.0",
+  "description": "Nuxt.js project",
   "author": "Drake Leung <drakeleung42@gmail.com>",
   "private": true,
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
-  },
   "dependencies": {
-    "rxcss": "latest",
-    "rxjs": "^5.0.3",
-    "vue": "^2.1.0",
-    "vue-router": "^2.1.3",
-    "vue-rx": "^2.3.1"
+    "nuxt": "latest"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
   },
   "devDependencies": {
-    "babel-core": "^6.0.0",
-    "babel-loader": "^6.0.0",
-    "babel-preset-env": "^1.1.8",
-    "babel-preset-es2015": "^6.0.0",
-    "cross-env": "^3.0.0",
-    "css-loader": "^0.25.0",
-    "file-loader": "^0.9.0",
-    "postcss-cssnext": "^2.9.0",
-    "postcss-responsive-type": "^0.5.0",
-    "vue-loader": "^10.0.0",
-    "vue-template-compiler": "^2.1.0",
-    "webpack": "^2.1.0-beta.25",
-    "webpack-dev-server": "^2.1.0-beta.9"
+    "postcss-responsive-type": "^0.5.0"
   }
 }

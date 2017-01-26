@@ -1,0 +1,28 @@
+:root {
+  font-size: 16px;
+  font-size: responsive;
+}
+
+body {
+  background-color: #fff;
+  color: #2e2f30;
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  margin: 0;
+}
+
+a,
+a:hover,
+a:focus,
+a:visited {
+  color: #41B883;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity .5s
+}
+
+.page-enter,
+.page-leave-active {
+  opacity: 0
+}
