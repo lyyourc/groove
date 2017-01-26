@@ -2,6 +2,7 @@ module.exports = {
   build: {
     postcss: [
       require('postcss-responsive-type')(),
+      require("postcss-cssnext")(),
     ],
   },
 
