@@ -1,5 +1,8 @@
 {
   "presets": [
-    ["es2015", { "modules": false }]
+    ["env", {
+      "targets": { "chrome": 55 },
+      "modules": false
+     }]
   ]
 }
