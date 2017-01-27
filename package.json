@@ -5,7 +5,9 @@
   "author": "Drake Leung <drakeleung42@gmail.com>",
   "private": true,
   "dependencies": {
-    "nuxt": "latest"
+    "nuxt": "latest",
+    "rxjs": "^5.0.3",
+    "vue-rx": "^2.3.1"
   },
   "scripts": {
     "dev": "nuxt",

@@ -4,7 +4,15 @@ module.exports = {
       require('postcss-responsive-type')(),
       require("postcss-cssnext")(),
     ],
+    vendors: [
+      'vue-rx',      
+      'rxjs',
+    ],
   },
+
+  plugins: [
+    '~plugins/vue-rx',
+  ],
 
   /*
   ** Headers of the page
