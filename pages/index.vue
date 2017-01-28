@@ -27,9 +27,9 @@ export default {
     return {
       navs: [
         { name: 'sort', path: '/sort'}
-      ]
+      ],
     }
-  }
+  },
 }
 </script>
 
