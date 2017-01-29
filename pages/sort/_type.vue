@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="sort-container">
   <ul class="bar-list" ref="list">
     <li v-for="item in items" :key="item" class="bar" :id="item"
       :style="{ height: `${item * 2}px` }">
@@ -47,13 +47,18 @@ export default {
     const animations$ = Observable
       .merge(start$, stop$, reset$)
       .switchMap(action =>
-        action === 'start' ? interval$ : Observable.empty())
-      .scan((acc, curr) => (acc + 1), 0)
+        action === 'start' ? interval$ : Observable.of(action))
+      .scan((acc, curr) => (
+        curr === 'stop'
+          ? acc
+          : curr === 'reset'
+            ? 0
+            : acc + 1
+        ), 0)
       .map(i => animations[i])
       .filter(animation => !!animation)
 
     this.$subscribeTo(animations$, fn => {
-      debugger
       fn && fn()
     })
   },
@@ -129,22 +134,19 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.sort-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   justify-content: center;
-  align-items: center;
 }
 
-.flip-list-move {
-  /* transition: transform 1s; */
-}
 .bar-list {
-  width: 20rem;
-  height: 10rem;
   padding: 0;
+  margin: 1rem;
   list-style: none;
-  border: 1px solid #ddd;
+  // border: 1px solid #ddd;
   display: flex;
   align-items: flex-end;
 }
@@ -152,6 +154,7 @@ export default {
   width: 2rem;
   background: #abcdef;
   border-right: 1px solid #fff;
+  flex: 1;
   transition: transform 1s;
 
   &:last-child {

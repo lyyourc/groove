@@ -27,6 +27,12 @@ export default {
 </script>
 
 <style>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 .nav-list {
   list-style: none;
   padding: 0;
