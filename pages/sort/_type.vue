@@ -1,15 +1,16 @@
 <template>
 <div class="sort-container">
   <ul class="bar-list" ref="list">
-    <li v-for="item in items" :key="item" class="bar" :id="item"
+    <li v-for="item in items" :key="item" class="bar" 
+      :id="'item-'+item"
       :style="{ height: `${item * 2}px` }">
     </li>
   </ul>
 
   <div class="control">
-    <button id="startBtn">Start</button>
-    <button id="stopBtn">Stop</button>
-    <button id="resetBtn">Reset</button>
+    <button id="restartBtn" v-show="isPlayDone">Restart</button>
+    <button id="startBtn" v-show="!isPlaying && !isPlayDone">Start</button>
+    <button id="stopBtn" v-show="isPlaying && !isPlayDone">Stop</button>
   </div>
 </div>
 </template>
@@ -20,13 +21,20 @@ import { Observable } from 'rxjs/Observable'
 export default {
   data({ params } = {}) {
     return {
+      isPlaying: false,
+      currentStep: -1,
       items: [20, 12, 7, 30, 18],
       animations: [],
-      positions: [],
+      positions: {},
+    }
+  },
+  computed: {
+    isPlayDone() {
+      return this.currentStep === this.animations.length - 1
     }
   },
   created() {
-    this.animations = [ this.swap.bind(this, this.items) ]
+    this.initItems = this.items
     this.sort()
   },
   updated() {
@@ -36,36 +44,40 @@ export default {
   mounted() {
     this.updatePosition()
 
-    const start$ = this.$fromDOMEvent('#startBtn', 'click').mapTo('start')
-    const stop$ = this.$fromDOMEvent('#stopBtn', 'click').mapTo('stop')
-    const reset$ = this.$fromDOMEvent('#resetBtn', 'click').mapTo('reset')
+    const start$ = this.$fromDOMEvent('#startBtn', 'click')
+      .do(() => this.isPlaying = true)
 
-    const animations = this.animations
+    const stop$ = this.$fromDOMEvent('#stopBtn', 'click')
+      .do(() => this.isPlaying = false)
+
+    const restart$ = this.$fromDOMEvent('#restartBtn', 'click')
+      .do(() => {
+        this.isPlaying = true
+        this.items = this.initItems
+      })
+
+    const { animations } = this
     const interval$ = Observable.interval(1000)
+      .takeUntil(stop$)
+      .map(() => this.currentStep = this.isPlayDone ? 0 : this.currentStep + 1)
+
+    const animations$ = start$
+      .merge(restart$.delay(500))
+      .switchMapTo(interval$)
       .take(animations.length)
-
-    const animations$ = Observable
-      .merge(start$, stop$, reset$)
-      .switchMap(action =>
-        action === 'start' ? interval$ : Observable.of(action))
-      .scan((acc, curr) => (
-        curr === 'stop'
-          ? acc
-          : curr === 'reset'
-            ? 0
-            : acc + 1
-        ), 0)
       .map(i => animations[i])
-      .filter(animation => !!animation)
+      .repeat()
 
-    this.$subscribeTo(animations$, fn => {
-      fn && fn()
-    })
+    this.$subscribeTo(animations$, fn => fn())
   },
+
   methods: {
     sort() {
       let items = [...this.items]
       const length = items.length
+
+      // if not set, `null` will exist in this array, but why?
+      this.animations = [] 
 
       for (let i = 0; i < length - 1; i++) {
         for (let j = 0; j < length - i - 1; j++) {
@@ -78,10 +90,7 @@ export default {
             itemsCopy[j] = item2
             itemsCopy[j + 1] = tmp
 
-            this.animations = [
-              ...this.animations,
-              this.swap.bind(this, itemsCopy)
-            ]
+            this.animations.push(this.swap.bind(this, itemsCopy))
             items = itemsCopy
           }
         }
@@ -160,5 +169,12 @@ export default {
   &:last-child {
     border-right: none;
   }
+}
+
+.control {
+  margin: 1rem;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
 }
 </style>
