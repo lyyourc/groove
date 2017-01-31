@@ -11,6 +11,9 @@
     <button id="restartBtn" v-show="isPlayDone">Restart</button>
     <button id="startBtn" v-show="!isPlaying && !isPlayDone">Start</button>
     <button id="stopBtn" v-show="isPlaying && !isPlayDone">Stop</button>
+    <div class="process-bar">
+      <div class="process" :style="{ width: `${process}%`}"></div>
+    </div>
   </div>
 </div>
 </template>
@@ -31,7 +34,10 @@ export default {
   computed: {
     isPlayDone() {
       return this.currentStep === this.animations.length - 1
-    }
+    },
+    process() {
+      return (this.currentStep + 1) / this.animations.length * 100
+    },
   },
   created() {
     this.initItems = this.items
@@ -172,9 +178,32 @@ export default {
 }
 
 .control {
-  margin: 1rem;
+  padding: 1rem;
+  margin: 0;
   width: 100%;
   position: absolute;
   bottom: 0;
+  display: flex;
+
+  & button {
+    margin: 0;
+    padding: 0;
+    padding-right: 1rem;
+  }
+}
+
+.process-bar {
+  flex: 1;
+  position: relative;
+  background: #eee;
+
+  & .process {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(0, 0, 0, .2);
+    transition: width 1s;
+  }
 }
 </style>
