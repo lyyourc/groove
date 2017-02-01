@@ -11,8 +11,8 @@
     <button id="restartBtn" v-show="isPlayDone">Restart</button>
     <button id="startBtn" v-show="!isPlaying && !isPlayDone">Start</button>
     <button id="stopBtn" v-show="isPlaying && !isPlayDone">Stop</button>
-    <div class="process-bar">
-      <div class="process" :style="{ width: `${process}%`}"></div>
+    <div class="slider">
+      <div class="progress" :style="{ width: `${progress}%`}"></div>
     </div>
   </div>
 </div>
@@ -35,8 +35,10 @@ export default {
     isPlayDone() {
       return this.currentStep === this.animations.length - 1
     },
-    process() {
-      return (this.currentStep + 1) / this.animations.length * 100
+    progress() {
+      const { length } = this.animations
+      const step = (this.currentStep + 1)
+      return Math.min(length, step) / length * 100
     },
   },
   created() {
@@ -60,21 +62,45 @@ export default {
       .do(() => {
         this.isPlaying = true
         this.items = this.initItems
+        this.currentStep = -1
       })
 
-    const { animations } = this
+    const slider$ = Observable
+      .fromEvent(this.$el.querySelector('.slider'), 'click')
+      .map(e => {
+        const width = getComputedStyle(e.target, null)
+          .getPropertyValue("width")
+          .replace('px', '')
+
+        const step = e.offsetX / Number(width) * this.animations.length
+        if (step < 0.2) this.items = this.initItems
+
+        return Math.floor(step)
+      })
+      .do(step => {
+        this.currentStep = step - 1
+        this.isPlaying = true
+      })
+      // .subscribe(console.log)
+
+    const { animations, currentStep } = this
     const interval$ = Observable.interval(1000)
       .takeUntil(stop$)
-      .map(() => this.currentStep = this.isPlayDone ? 0 : this.currentStep + 1)
+      .map(() => {
+        const currentStep = this.currentStep + 1
+        return currentStep < this.animations.length
+          ? this.currentStep = currentStep
+          : Observable.empty()
+      })
 
     const animations$ = start$
-      .merge(restart$.delay(500))
+      .merge(restart$.delay(500), slider$)
       .switchMapTo(interval$)
       .take(animations.length)
       .map(i => animations[i])
       .repeat()
 
-    this.$subscribeTo(animations$, fn => fn())
+    this.$subscribeTo(animations$, fn => fn && fn())
   },
 
   methods: {
@@ -192,18 +218,18 @@ export default {
   }
 }
 
-.process-bar {
+.slider {
   flex: 1;
   position: relative;
   background: #eee;
 
-  & .process {
+  & .progress {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     background: rgba(0, 0, 0, .2);
-    transition: width 1s;
+    transition: width .5s;
   }
 }
 </style>
